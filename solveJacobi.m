@@ -3,23 +3,20 @@ function x_k1 = solveJacobi(A, b, t)
 %   A: coefficient matrix
 %   b: independent values vector
 %   t: threshold
-[~, n] = size(A);   % Gets number of variables
-
-x_k = zeros(n,1);   % Starting solution (vector of 0s)
-
-D = diag(diag(A));  % n x n matrix holding only diagonal values of A
-UL = A - D;         % n x n matrix holding only non-diagonal values of A
-
-J = D \ b;          % Precalculate J = D-1*b
-W = D \ UL;         % Precalculate W = D-1*UL
-
+[~, n] = size(A);
+x_k = zeros(n,1);
+D = diag(diag(A));
+UL = A - D;
+% J = D-1 * b
+J = D \ b;
+% W = D-1 * UL
+W = D \ UL;
 conv = false;
 while ~conv
-    x_k1 = J - W * x_k;     % New values for x_k1 = J - Wx_k
-    
-    % Check if diff between prev and current solutions is less than threshold
+    x_k1 = J - W * x_k;
     if abs(x_k - x_k1) <= t
-        conv = true;    % if true, convergence has been reached
+        conv = true;
     end
-    x_k = x_k1;         % Update values for next iteration
+    x_k = x_k1;
+end
 end
